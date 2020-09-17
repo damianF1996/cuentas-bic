@@ -65,8 +65,78 @@ int  main () {
 	fclose (archivo);
 	return 0;
 }
+int cantidad(){
+FILE* archivo; 
+archivo=fopen("Cuentas.BIC","rb");
+Tarjeta t;
+int cant=0;
+while(fread(&t,sizeof(Tarjeta),1,archivo)){
+cant++;
+}
+fclose(archivo);
+return cant;
+}
 
-void ListarUsuarios(){
+void ordenar(){
+FILE* archivo;
+archivo=fopen("Cuentas.BIC","rb");
+Tarjeta t;
+Tarjeta array[cantidad()];
+int c=0;
+while(fread(&t,sizeof(Tarjeta),1,archivo)){
+array[c].Activa=t.Activa;
+array[c].FechaCreacion=t.FechaCreacion;
+array[c].NroCliente=t.NroCliente;
+array[c].Saldo=t.Saldo;
+array[c].TarjetaID=t.TarjetaID;
+c++;
+}
+
+fclose(archivo);
+
+Tarjeta aux;
+
+for(int i=0;i<cantidad();i++){
+for(int j=0;j<cantidad()-1;j++){
+if(array[j].Saldo>array[j+1].Saldo){
+aux.Saldo=array[j].Saldo;
+aux.Activa=array[j].Activa;
+aux.FechaCreacion=array[j].FechaCreacion;
+aux.NroCliente=array[j].NroCliente;
+aux.TarjetaID=array[j].TarjetaID;
+array[j].Saldo=array[j+1].Saldo;
+array[j].FechaCreacion=array[j+1].FechaCreacion;
+array[j].NroCliente=array[j+1].NroCliente;
+array[j].Activa=array[j+1].Activa;
+array[j].TarjetaID=array[j+1].TarjetaID;
+array[j+1].Saldo=aux.Saldo;
+array[j+1].Activa=aux.Activa;
+array[j+1].FechaCreacion=aux.FechaCreacion;
+array[j+1].NroCliente=aux.NroCliente;
+array[j+1].TarjetaID=aux.TarjetaID;
+
+}
+}
+}
+
+FILE* arch;
+arch=fopen("a.dat","ab");
+Tarjeta au;
+for(int f=0;f<cantidad();f++){
+        au.Activa=array[f].Activa;
+        au.FechaCreacion=array[f].FechaCreacion;
+        au.NroCliente=array[f].NroCliente;
+        au.Saldo=array[f].Saldo;
+        au.TarjetaID=array[f].TarjetaID;
+    fwrite(&au,sizeof(Tarjeta),1,arch);
+}
+fclose(arch);
+remove("Cuentas.BIC");
+rename("a.dat","Cuentas.BIC");
+}
+
+void ListarUsuarios () {
+        ordenar();
 	FILE*archivo;
 	archivo=fopen("Cuentas.BIC","rb");
 	Tarjeta t;
