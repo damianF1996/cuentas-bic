@@ -278,7 +278,7 @@ rename("copia.dat","Cuentas.BIC");
 
 
 }
-void procesar(char cliente){
+void procesar(char cliente[]){
 
 	FILE*archivo;
 	FILE*archivoF;
@@ -290,23 +290,23 @@ void procesar(char cliente){
     {
 		while(!encontrado && fread(&t,sizeof(Tarjeta),1,archivo))
         {
-			if(strcmp(Cuenta,t.CuentaID)==0)
+			if(strcmp(cliente,t.CuentaID)==0)
 			{
 			    encontrado = 1;
-                archivoF = fopen("Procesados.BIC","ab")
-                while ( a != 'n')
+                archivoF = fopen("Procesados.BIC","ab");
+                while ( a != 0 )
 			    {
-
+                    m.MovimientoID = i;
                     cout<<" Nro de cuenta " << t.CuentaID << endl;
                     cout<<" ingrese fecha y hora (aaaammddHH:MM)"<< endl;
                     cin >>m.FechaHora;
-                    cout<<" Movimiento Nro "<< m.MovimientoID = i << endl;
+                    cout<<" Movimiento Nro "<< m.MovimientoID << endl;
                     cout<<" Ingrese el monto " << endl;
                     cin>>m.Monto;
                     i++;
                     t.Saldo = t.Saldo + m.Monto;
-                    cout<<"desea continuar s / n "<< endl;
-                    cin >>a;
+                    cout<<"desea continuar ingrese 1, si no 0"<< endl;
+                    cin >> a;
                     fseek(archivo,sizeof(Tarjeta),SEEK_CUR);
                     fwrite(&t,sizeof(Tarjeta),1,archivo);
 			    }
@@ -319,4 +319,4 @@ void procesar(char cliente){
         }
 	fclose(archivo);
     }
-
+}
