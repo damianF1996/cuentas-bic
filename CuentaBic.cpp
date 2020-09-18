@@ -226,3 +226,42 @@ int BuscarUsuario(char Cuenta[]){
 	}
 	return 0;
 }
+
+void SoloActivos(){
+FILE* archivo;
+archivo=fopen("Cuentas.BIC","rb");
+Tarjeta t;
+Tarjeta areglo[cantidad()];
+int u=0;
+while(fread(&t,sizeof(Tarjeta),1,archivo)){
+areglo[u].Activa=t.Activa;
+areglo[u].FechaCreacion=t.FechaCreacion;
+areglo[u].NroCliente=t.NroCliente;
+areglo[u].Saldo=t.Saldo;
+areglo[u].TarjetaID=t.TarjetaID;
+u++;
+}
+fclose(archivo);
+FILE* copia;
+copia=fopen("copia.dat","ab");
+
+Tarjeta c;
+
+for(int r=0;r<cantidad();r++){
+if(areglo[r].Activa){
+c.Activa=areglo[r].Activa;
+c.FechaCreacion=areglo[r].FechaCreacion;
+c.NroCliente=areglo[r].NroCliente;
+c.Saldo=areglo[r].Saldo;
+c.TarjetaID=areglo[r].TarjetaID;
+fwrite(&c,sizeof(Tarjeta),1,copia);
+}
+}
+fclose(copia);
+
+remove("Cuentas.BIC");
+rename("copia.dat","Cuentas.BIC");
+
+
+
+}
