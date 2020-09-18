@@ -284,7 +284,7 @@ void procesar(char cliente[]){
 	FILE*archivoF;
 	Tarjeta t;
 	Movimiento m;
-	int i = 0, a;
+	int i = 1, a,b;
 	int encontrado = 0;
 	if(archivo = fopen("Cuentas.BIC","rb+"))
     {
@@ -303,12 +303,12 @@ void procesar(char cliente[]){
                     cout<<" Movimiento Nro "<< m.MovimientoID << endl;
                     cout<<" Ingrese el monto " << endl;
                     cin>>m.Monto;
+                    t.Saldo =t.Saldo +m.Monto;
                     i++;
-                    t.Saldo = t.Saldo + m.Monto;
                     cout<<"desea continuar ingrese 1, si no 0"<< endl;
                     cin >> a;
-                    fseek(archivo,sizeof(Tarjeta),SEEK_CUR);
-                    fwrite(&t,sizeof(Tarjeta),1,archivo);
+                    fseek(archivoF,sizeof(Tarjeta),SEEK_CUR);
+                    fwrite(&m,sizeof(Tarjeta),1,archivo);
 			    }
                 fclose(archivoF);
 			}
@@ -319,4 +319,5 @@ void procesar(char cliente[]){
         }
 	fclose(archivo);
     }
+
 }
