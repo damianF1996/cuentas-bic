@@ -29,7 +29,7 @@ int BuscarUsuario(char Cuenta[]);
 int  main () {
 	FILE*archivo;
 	int opcion = 0;
-	while(opcion!=6) {
+	while(opcion!=7) {
 	cout<<" 1 - Listado de usuarios "<< endl;
 	cout<<" 2 - Agregar un nuevo usuario "<< endl;
 	cout<<" 3 - Eliminar una cuenta (por id) "<< endl;
@@ -320,4 +320,4 @@ void procesar(char cliente[]){
 	fclose(archivo);
     }
 
-}
+
