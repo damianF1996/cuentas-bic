@@ -16,13 +16,16 @@ struct Movimiento {
 	int MovimientoID;
 	int FechaHora;
 	int Monto;
-	int CuentaID;
 };
 
+void ordenar();
+void procesar(char cliente[]);
+void SoloActivos();
 void ListarUsuarios(); 
 void AgregarUsuario();
 int EliminarUsuario(char Cuenta[]);
 int BuscarUsuario(char Cuenta[]);
+
 int  main () {
 	FILE*archivo;
 	int opcion = 0;
@@ -32,7 +35,8 @@ int  main () {
 	cout<<" 3 - Eliminar una cuenta (por id) "<< endl;
 	cout<<" 4 - Buscar por id de la cuenta y mostrar "<< endl;
 	cout<<" 5 - Listar cuentas activas por saldo descendente "<< endl;
-	cout<<" 6 - Salir y guardar cambios "<< endl;
+	cout<<" 6 - Procesar lote de movimientos " << endl;
+	cout<<" 7 - Salir y guardar cambios "<< endl;
 	cout<<" Elija una opcion: "<< endl;
 	cin >>opcion;
 	char cuentaBuscada[10];
@@ -54,9 +58,18 @@ int  main () {
 			BuscarUsuario(cuentaBuscada);
 			break;
 		case 5:	
+			ordenar();
 			break;
 		case 6:
+			cout<<"Ingrese el numero de  Cuenta para iniciar movimientos" <<endl;
+		    	cin>>cuentaBuscada;
+		    	procesar(cuentaBuscada);
 			break;
+		case 7:
+            		SoloActivos();
+            		cout<<" Se guardo con correctamente la jornada de hoy" <<endl;
+            		return 0;
+            		break;
 		default:
 			break;		
 	}
@@ -265,3 +278,45 @@ rename("copia.dat","Cuentas.BIC");
 
 
 }
+void procesar(char cliente){
+
+	FILE*archivo;
+	FILE*archivoF;
+	Tarjeta t;
+	Movimiento m;
+	int i = 0, a;
+	int encontrado = 0;
+	if(archivo = fopen("Cuentas.BIC","rb+"))
+    {
+		while(!encontrado && fread(&t,sizeof(Tarjeta),1,archivo))
+        {
+			if(strcmp(Cuenta,t.CuentaID)==0)
+			{
+			    encontrado = 1;
+                archivoF = fopen("Procesados.BIC","ab")
+                while ( a != 'n')
+			    {
+
+                    cout<<" Nro de cuenta " << t.CuentaID << endl;
+                    cout<<" ingrese fecha y hora (aaaammddHH:MM)"<< endl;
+                    cin >>m.FechaHora;
+                    cout<<" Movimiento Nro "<< m.MovimientoID = i << endl;
+                    cout<<" Ingrese el monto " << endl;
+                    cin>>m.Monto;
+                    i++;
+                    t.Saldo = t.Saldo + m.Monto;
+                    cout<<"desea continuar s / n "<< endl;
+                    cin >>a;
+                    fseek(archivo,sizeof(Tarjeta),SEEK_CUR);
+                    fwrite(&t,sizeof(Tarjeta),1,archivo);
+			    }
+                fclose(archivoF);
+			}
+            if(!encontrado)
+            {
+                cout << "No se encontro el cliente" << endl;
+            }
+        }
+	fclose(archivo);
+    }
+
