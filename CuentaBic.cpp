@@ -307,7 +307,7 @@ void procesar(char cliente[]){
                     i++;
                     cout<<"desea continuar ingrese 1, si no 0"<< endl;
                     cin >> a;
-                    fseek(archivoF,sizeof(Tarjeta),SEEK_CUR);
+                    fseek(archivo,sizeof(Tarjeta),SEEK_CUR);
                     fwrite(&m,sizeof(Tarjeta),1,archivo);
 			    }
                 fclose(archivoF);
